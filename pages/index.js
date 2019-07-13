@@ -1,3 +1,3 @@
-import Employees from './employees';
+import EmployeesRoute from './EmployeesRoute';
 
-export default Employees;
+export default EmployeesRoute;

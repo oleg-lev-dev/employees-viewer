@@ -18,12 +18,6 @@ function Header({title}) {
       <Container>
         <Row>
           <Navbar.Brand href="/">Employees App</Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav"/>
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="mr-auto">
-              <Link route="employees" title="Employees"/>
-            </Nav>
-          </Navbar.Collapse>
         </Row>
       </Container>
     </Navbar>

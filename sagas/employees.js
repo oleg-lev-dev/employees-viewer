@@ -63,10 +63,10 @@ export default function* root() {
   yield all(
     [
       takeEvery(ActionTypes.EMPLOYEE_GET, getEmployeeSaga),
-      takeLatest(ActionTypes.EMPLOYEES_GET, getEmployeesSaga),
-      takeLatest(ActionTypes.EMPLOYEES_POST, postEmployeesSaga),
-      takeLatest(ActionTypes.EMPLOYEES_PUT, putEmployeesSaga),
-      takeLatest(ActionTypes.EMPLOYEES_DELETE, deleteEmployeesSaga),
+      takeEvery(ActionTypes.EMPLOYEES_GET, getEmployeesSaga),
+      takeEvery(ActionTypes.EMPLOYEES_POST, postEmployeesSaga),
+      takeEvery(ActionTypes.EMPLOYEES_PUT, putEmployeesSaga),
+      takeEvery(ActionTypes.EMPLOYEES_DELETE, deleteEmployeesSaga),
     ]
   );
 }
