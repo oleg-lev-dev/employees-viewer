@@ -3,6 +3,9 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
 import {useField, useForm} from 'react-final-form-hooks';
+import PropTypes from 'prop-types';
+
+import {TEmployee} from '../helpers/types';
 
 const emptyEmployee = {
   firstName: '',
@@ -11,7 +14,7 @@ const emptyEmployee = {
   description: '',
 };
 
-export default function ModalAddEmployee({onSave, onHide, show, employee}) {
+function ModalAddEmployee({onSave, onHide, show, employee}) {
   const {form, handleSubmit, values, pristine, submitting} = useForm({
     onSubmit: onSave,
     initialValues: employee || emptyEmployee
@@ -28,7 +31,6 @@ export default function ModalAddEmployee({onSave, onHide, show, employee}) {
   return (
     <Modal show={show}
            onHide={onHide}
-           onSave={handleSubmit}
            aria-labelledby="contained-modal-title-vcenter">
       <Modal.Header closeButton>
         <Modal.Title>
@@ -71,4 +73,13 @@ export default function ModalAddEmployee({onSave, onHide, show, employee}) {
       </Modal.Footer>
     </Modal>
   )
+}
+
+ModalAddEmployee.propTypes = {
+  onSave: PropTypes.func.isRequired,
+  onHide: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired,
+  employee: TEmployee
 };
+
+export default ModalAddEmployee;
