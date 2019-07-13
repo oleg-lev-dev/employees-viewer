@@ -1,9 +1,8 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import {Field as FinalField, Form as FinalForm} from 'react-final-form'
+import {useField, useForm} from 'react-final-form-hooks';
 
 const emptyEmployee = {
   firstName: '',
@@ -12,112 +11,64 @@ const emptyEmployee = {
   description: '',
 };
 
+export default function ModalAddEmployee({onSave, onHide, show, employee}) {
+  const {form, handleSubmit, values, pristine, submitting} = useForm({
+    onSubmit: onSave,
+    initialValues: employee || emptyEmployee
+    //validate // a record-level validation function to check all form values
+  });
+  const isEditing = !!employee;
+  const title = isEditing ? `Edit "${employee.firstName}"` : 'Add New Employee';
 
-export default class ModalAddEmployee extends Component {
-  static propTypes = {
-    onSave: PropTypes.func.isRequired,
-    onHide: PropTypes.func.isRequired,
-    show: PropTypes.bool.isRequired,
-    employee: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      firstName: PropTypes.string.isRequired,
-      position: PropTypes.string.isRequired,
-      lastName: PropTypes.string.isRequired,
-      description: PropTypes.string.isRequired,
-    }),
-  };
+  const firstName = useField('firstName', form);
+  const lastName = useField('lastName', form);
+  const position = useField('position', form);
+  const description = useField('description', form);
 
-  onSave = () => {
-    this.props.onSave(this.state.newEmployee);
-  };
+  return (
+    <Modal show={show}
+           onHide={onHide}
+           onSave={handleSubmit}
+           aria-labelledby="contained-modal-title-vcenter">
+      <Modal.Header closeButton>
+        <Modal.Title>
+          {title}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form.Group controlId="formGroupFirstName">
+          <Form.Label>First Name</Form.Label>
+          <Form.Control type="text"
+                        placeholder="Enter First Name"
+                        {...firstName.input}/>
+        </Form.Group>
 
-  get title() {
-    if (this.isEditing) {
-      return `Edit "${this.props.employee.firstName}"`
-    }
-    return 'Add New Employee';
-  };
+        <Form.Group controlId="formGroupLastName">
+          <Form.Label>Last Name</Form.Label>
+          <Form.Control type="text"
+                        placeholder="Enter Last Name"
+                        {...lastName.input}/>
+        </Form.Group>
 
-  get isEditing() {
-    return !!this.props.employee;
-  }
+        <Form.Group controlId="formGroupPosition">
+          <Form.Label>Position</Form.Label>
+          <Form.Control type="text"
+                        placeholder="Enter Position"
+                        {...position.input}/>
+        </Form.Group>
 
-  render() {
-    const {
-      props: {
-        show,
-        onHide,
-        employee = emptyEmployee
-      }
-    } = this;
-    return (
-      <FinalForm
-        initialValues={employee}
-        onSubmit={this.props.onSave}
-        render={({handleSubmit, pristine, invalid}) => (
-          <Modal show={show}
-                 onHide={onHide}
-                 aria-labelledby="contained-modal-title-vcenter">
-            <Modal.Header closeButton>
-              <Modal.Title>
-                {this.title}
-              </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
+        <Form.Group controlId="formGroupDescription">
+          <Form.Label>Description</Form.Label>
+          <Form.Control as="textarea"
+                        rows="3"
+                        placeholder="Enter Description"
+                        {...description.input}/>
+        </Form.Group>
+      </Modal.Body>
 
-              <FinalField name="firstName">
-                {({input, meta}) => (
-                  <Form.Group controlId="formGroupFirstName">
-                    <Form.Label>First Name</Form.Label>
-                    <Form.Control type="text"
-                                  placeholder="Enter First Name"
-                                  {...input}/>
-                  </Form.Group>
-                )}
-              </FinalField>
-
-              <FinalField name="lastName">
-                {({input, meta}) => (
-                  <Form.Group controlId="formGroupLastName">
-                    <Form.Label>Last Name</Form.Label>
-                    <Form.Control type="text"
-                                  placeholder="Enter Last Name"
-                                  {...input}/>
-                  </Form.Group>
-                )}
-              </FinalField>
-
-              <FinalField name="position">
-                {({input, meta}) => (
-                  <Form.Group controlId="formGroupPosition">
-                    <Form.Label>Position</Form.Label>
-                    <Form.Control type="text"
-                                  placeholder="Enter Position"
-                                  {...input}/>
-                  </Form.Group>
-                )}
-              </FinalField>
-
-              <FinalField name="description">
-                {({input, meta}) => (
-                  <Form.Group controlId="formGroupDescription">
-                    <Form.Label>Description</Form.Label>
-                    <Form.Control as="textarea"
-                                  rows="3"
-                                  placeholder="Enter Description"
-                                  {...input}/>
-                  </Form.Group>
-                )}
-              </FinalField>
-
-            </Modal.Body>
-            <Modal.Footer>
-              <Button onClick={handleSubmit}>
-                {this.isEditing ? 'Save' : 'Submit'}
-              </Button>
-            </Modal.Footer>
-          </Modal>
-        )}/>
-    );
-  }
-}
+      <Modal.Footer>
+        <Button disabled={pristine || submitting} onClick={handleSubmit}>Save</Button>
+      </Modal.Footer>
+    </Modal>
+  )
+};
