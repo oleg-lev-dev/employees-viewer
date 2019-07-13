@@ -19,8 +19,11 @@ const validate = (value) => {
 };
 
 function ModalAddEmployee({onSave, onHide, show, employee}) {
-  const {form, handleSubmit, pristine, submitting, invalid} = useForm({
-    onSubmit: onSave,
+  const {form, values, handleSubmit, pristine, submitting, invalid} = useForm({
+    onSubmit: (event) => {
+      onSave(event, values);
+      setTimeout(form.reset);
+    },
     initialValues: employee || emptyEmployee,
   });
   const isEditing = !!employee;
