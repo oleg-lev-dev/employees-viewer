@@ -15,7 +15,7 @@ export function* getEmployeesSaga() {
     const data = yield res.json();
     yield put(employeesGetSuccess(data))
   } catch (err) {
-
+    console.error('saga error', err);
   }
 }
 
@@ -25,7 +25,7 @@ export function* getEmployeeSaga({payload}) {
     const data = yield res.json();
     yield put(employeesGetSuccess([data]))
   } catch (err) {
-
+    console.error('saga error', err);
   }
 }
 
@@ -35,7 +35,7 @@ export function* postEmployeesSaga({payload}) {
     const data = yield res.json();
     yield put(employeesPostSuccess(data))
   } catch (err) {
-
+    console.error('saga error', err);
   }
 };
 
@@ -45,7 +45,7 @@ export function* putEmployeesSaga({payload}) {
     const data = yield res.json();
     yield put(employeesPutSuccess(data))
   } catch (err) {
-
+    console.error('saga error', err);
   }
 };
 
@@ -55,7 +55,7 @@ export function* deleteEmployeesSaga({payload}) {
     const data = yield res.json();
     yield put(employeesDeleteSuccess(data))
   } catch (err) {
-
+    console.error('saga error', err);
   }
 }
 
